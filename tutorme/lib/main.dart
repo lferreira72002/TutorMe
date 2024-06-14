@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tutorme/UnAuthPages/Home/homePage.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/Home/homePage.dart';
 import 'package:flutter/services.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/Login/loginPage.dart';
 
 void main() async {
   await Supabase.initialize(
@@ -34,6 +35,7 @@ class MainApp extends StatelessWidget {
           initialRoute: '/',
           getPages: [
             GetPage(name: '/', page: () => homePage()),
+            GetPage(name: '/Login', page: () => loginPage())
           ],
         );
       },
