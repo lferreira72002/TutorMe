@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
@@ -40,6 +41,19 @@ class _loginPageState extends State<loginPage> {
                     child: Container(
                       child: Column(
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text('TutorMe',
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                          color: Color(0xff437257),
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w700))
+                                ]),
+                          ),
                           100.verticalSpaceFromWidth,
                           Text(
                             'Log In',
@@ -63,6 +77,23 @@ class _loginPageState extends State<loginPage> {
                               hint_text: "Password",
                               controller: password_controller,
                               textInputAction: TextInputAction.done,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      child: Text("Forgot Password?",
+                                          style: TextStyle(
+                                            color: Color(0xffC1C1C1),
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                            decoration: TextDecoration.none,
+                                          )),
+                                    )
+                                  ]),
                             ),
                           ])),
                           100.verticalSpaceFromWidth,

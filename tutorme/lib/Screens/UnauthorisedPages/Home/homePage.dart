@@ -18,12 +18,6 @@ class _homePageState extends State<homePage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Color(0xffFFFCF1),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Color(0xff437257)),
-            onPressed: () {
-              Get.back();
-            },
-          ),
         ),
         body: Container(
             child: SafeArea(
@@ -34,7 +28,7 @@ class _homePageState extends State<homePage> {
                     child: Container(
                       child: Column(
                         children: [
-                          200.verticalSpaceFromWidth,
+                          150.verticalSpaceFromWidth,
                           Image.asset('assets/images/GreenHatLogo.png',
                               height: 100, width: 100),
                           Text(
@@ -47,7 +41,7 @@ class _homePageState extends State<homePage> {
                               decoration: TextDecoration.none,
                             ),
                           ),
-                          100.verticalSpaceFromWidth,
+                          150.verticalSpaceFromWidth,
                           UnauthorisedButton(
                               onPressed: () {
                                 navigateToLogin();
