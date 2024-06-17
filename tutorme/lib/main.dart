@@ -6,6 +6,7 @@ import 'package:tutorme/Screens/UnauthorisedPages/Home/homePage.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Login/loginPage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupBankPage.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupConfirmationPage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupDetailsPage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupBluecardPage.dart';
 
@@ -41,7 +42,10 @@ class MainApp extends StatelessWidget {
             GetPage(name: '/Login', page: () => loginPage()),
             GetPage(name: '/SignUpDetails', page: () => signupDetailsPage()),
             GetPage(name: '/SignUpBluecard', page: () => signupBluecardPage()),
-            GetPage(name: '/SignUpBank', page: () => signupBankPage())
+            GetPage(name: '/SignUpBank', page: () => signupBankPage()),
+            GetPage(
+                name: '/SignUpConfirmation',
+                page: () => singupConfirmationPage())
           ],
         );
       },

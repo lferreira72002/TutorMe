@@ -8,6 +8,7 @@ class UnauthorisedButton extends StatelessWidget {
   final text;
   final textColour;
   final isBorder;
+  final double bottomPadding;
 
   const UnauthorisedButton(
       {super.key,
@@ -15,12 +16,13 @@ class UnauthorisedButton extends StatelessWidget {
       required this.backGroundColour,
       required this.text,
       required this.textColour,
-      this.isBorder = false});
+      this.isBorder = false,
+      this.bottomPadding = 15.0});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
+      padding: EdgeInsets.only(left: 20, right: 20, bottom: bottomPadding),
       child: GestureDetector(
         onTap: onPressed,
         child: Container(

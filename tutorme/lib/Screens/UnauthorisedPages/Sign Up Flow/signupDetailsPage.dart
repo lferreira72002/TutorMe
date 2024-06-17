@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,7 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  int? isTutor = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -110,32 +112,66 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
                                 isObsecure: true,
                               ),
                             ])),
-                            80.verticalSpaceFromWidth,
-                            UnauthorisedButton(
-                                onPressed: () {
-                                  navigateToHome();
+                            10.verticalSpace,
+                            CupertinoSlidingSegmentedControl(
+                                padding: EdgeInsets.all(10),
+                                children: {
+                                  0: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 35, vertical: 10),
+                                    child: Text(
+                                      'Student',
+                                      style: TextStyle(
+                                        color: isTutor == 0
+                                            ? Color(0xffF6F5EE)
+                                            : Color(0xff437257),
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w600,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  ),
+                                  1: Text(
+                                    'Tutor',
+                                    style: TextStyle(
+                                      color: isTutor != 0
+                                          ? Color(0xffF6F5EE)
+                                          : Color(0xff437257),
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                  ),
                                 },
-                                backGroundColour: Color(0xff53B87B),
-                                text: "I am a parent/student",
-                                textColour: Color(0xffFFFCF1)),
-                            10.verticalSpaceFromWidth,
+                                backgroundColor: Color(0xffF6F5EE),
+                                thumbColor: Color(0xff437257),
+                                groupValue: isTutor,
+                                onValueChanged: (int? newValue) {
+                                  setState(() {
+                                    isTutor = newValue;
+                                    print(isTutor);
+                                  });
+                                }),
+                            70.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
-                                  navigateToBluecard();
+                                  navigateToNextScreen();
                                 },
                                 backGroundColour: Color(0xff437257),
-                                text: "I am a tutor",
+                                text: "Continue",
                                 textColour: Color(0xffFFFCF1)),
                           ],
                         ))))));
   }
 
-  void navigateToHome() {
-    print('Navigate to Home');
-  }
-
-  void navigateToBluecard() {
-    print('Navigate to Bluecard');
-    Get.toNamed('/SignUpBluecard');
+  void navigateToNextScreen() {
+    print('Navigate to next screen');
+    if (isTutor == 1) {
+      Get.offAllNamed('/SignUpBluecard');
+    } else {
+      Get.toNamed('/Login');
+    }
   }
 }

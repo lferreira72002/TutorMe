@@ -28,12 +28,6 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
           scrolledUnderElevation: 0,
           elevation: 0,
           backgroundColor: Color(0xffFFFCF1),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Color(0xff437257)),
-            onPressed: () {
-              Get.back();
-            },
-          ),
         ),
         body: Container(
             height: screenHeight,
@@ -113,7 +107,7 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
                                     signed: true),
                               ),
                             ])),
-                            120.verticalSpaceFromWidth,
+                            100.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
                                   navigateToBank();
@@ -127,7 +121,7 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
 
   void navigateToBank() {
     print('Navigate to Bank ');
-    Get.toNamed('/SignUpBank');
+    Get.offAllNamed('/SignUpBank');
   }
 }
 

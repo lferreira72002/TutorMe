@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
 import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
 
-class signupBankPage extends StatefulWidget {
-  const signupBankPage({super.key});
+class singupConfirmationPage extends StatefulWidget {
+  const singupConfirmationPage({super.key});
 
   @override
-  State<signupBankPage> createState() => _signupBankPageState();
+  State<singupConfirmationPage> createState() => _singupConfirmationPageState();
 }
 
-class _signupBankPageState extends State<signupBankPage> {
+class _singupConfirmationPageState extends State<singupConfirmationPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -59,7 +58,7 @@ class _signupBankPageState extends State<signupBankPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        'Bank Details',
+                                        'We are on it!',
                                         style: TextStyle(
                                           color: Color(0xff437257),
                                           fontFamily: 'Montserrat',
@@ -73,11 +72,11 @@ class _signupBankPageState extends State<signupBankPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        'We will need your bank details\nto pay you',
+                                        'We need a little time to run some\nchecks. You’ll hear from us within\n48 hours. In the mean time, why not\nexplore your profile. There is lots to\ndo:',
                                         style: TextStyle(
                                           color: Color(0xff437257),
                                           fontFamily: 'Montserrat',
-                                          fontSize: 18.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w700,
                                           decoration: TextDecoration.none,
                                         ),
@@ -87,73 +86,24 @@ class _signupBankPageState extends State<signupBankPage> {
                                 ],
                               ),
                             ),
-                            20.verticalSpaceFromWidth,
-                            Form(
-                                child: Column(children: [
-                              unauthorisedInput(
-                                hint_text: "Account Name",
-                                controller: nameController,
-                              ),
-                              unauthorisedInput(
-                                  hint_text: "BSB Number",
-                                  controller: emailController,
-                                  formatters: [HyphenInputFormatter()],
-                                  keyboard: TextInputType.numberWithOptions(
-                                      signed: true)),
-                              unauthorisedInput(
-                                hint_text: "Account Number",
-                                controller: passwordController,
-                                textInputAction: TextInputAction.done,
-                                keyboard: TextInputType.numberWithOptions(
-                                    signed: true),
-                                formatters: [
-                                  LengthLimitingTextInputFormatter(10)
-                                ],
-                              ),
-                            ])),
-                            100.verticalSpace,
+                            250.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
-                                  navigateToConfirmation();
+                                  navigateToBluecard();
                                 },
                                 backGroundColour: Color(0xff437257),
-                                text: "Finish",
+                                text: "To profile",
                                 textColour: Color(0xffFFFCF1)),
                           ],
                         ))))));
   }
 
-  void navigateToConfirmation() {
-    print('Navigate to Account Update');
-    Get.offAllNamed('/SignUpConfirmation');
+  void navigateToHome() {
+    print('Navigate to Home');
   }
-}
 
-class HyphenInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    String newText = newValue.text.replaceAll('-', '');
-
-    // Only allow digits to be entered
-    if (newText.isNotEmpty &&
-        !newText.characters.every((c) => c.contains(RegExp(r'[0-9]')))) {
-      return oldValue;
-    }
-
-    // Limit to 6 digits maximum
-    if (newText.length > 6) {
-      newText = newText.substring(0, 6);
-    }
-
-    // Insert hyphen after the third digit
-    if (newText.length > 3) {
-      newText = newText.substring(0, 3) + '-' + newText.substring(3);
-    }
-
-    return TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(offset: newText.length),
-    );
+  void navigateToBluecard() {
+    print('Navigate to Bluecard');
+    Get.offAllNamed('/SignUpBluecard');
   }
 }
