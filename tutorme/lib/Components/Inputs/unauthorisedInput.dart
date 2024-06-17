@@ -11,6 +11,7 @@ class unauthorisedInput extends StatelessWidget {
   final List<TextInputFormatter>? formatters;
   final bool isAutoFocus;
   final textInputAction;
+  final isObsecure;
 
   const unauthorisedInput(
       {super.key,
@@ -22,12 +23,13 @@ class unauthorisedInput extends StatelessWidget {
       this.keyboard = TextInputType.text,
       this.formatters,
       this.isAutoFocus = false,
-      this.textInputAction = TextInputAction.next});
+      this.textInputAction = TextInputAction.next,
+      this.isObsecure = false});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
       child: TextFormField(
           onTap: () {
             function;
@@ -39,6 +41,7 @@ class unauthorisedInput extends StatelessWidget {
           validator: validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: keyboard,
+          obscureText: isObsecure,
           decoration: InputDecoration(
               filled: true,
               fillColor: Color(0xffF6F5EE),

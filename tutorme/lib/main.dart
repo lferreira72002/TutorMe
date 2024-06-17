@@ -5,6 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Home/homePage.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Login/loginPage.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupBankPage.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupDetailsPage.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupBluecardPage.dart';
 
 void main() async {
   await Supabase.initialize(
@@ -35,7 +38,10 @@ class MainApp extends StatelessWidget {
           initialRoute: '/',
           getPages: [
             GetPage(name: '/', page: () => homePage()),
-            GetPage(name: '/Login', page: () => loginPage())
+            GetPage(name: '/Login', page: () => loginPage()),
+            GetPage(name: '/SignUpDetails', page: () => signupDetailsPage()),
+            GetPage(name: '/SignUpBluecard', page: () => signupBluecardPage()),
+            GetPage(name: '/SignUpBank', page: () => signupBankPage())
           ],
         );
       },

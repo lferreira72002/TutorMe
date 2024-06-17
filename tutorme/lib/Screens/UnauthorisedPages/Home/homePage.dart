@@ -20,47 +20,48 @@ class _homePageState extends State<homePage> {
           backgroundColor: Color(0xffFFFCF1),
         ),
         body: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: Color(0xffFFFCF1),
+            ),
             child: SafeArea(
                 child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xffFFFCF1),
-                    ),
                     child: Container(
-                      child: Column(
-                        children: [
-                          150.verticalSpaceFromWidth,
-                          Image.asset('assets/images/GreenHatLogo.png',
-                              height: 100, width: 100),
-                          Text(
-                            'TutorMe',
-                            style: TextStyle(
-                              color: Color(0xff437257),
-                              fontFamily: 'Montserrat',
-                              fontSize: 40.sp,
-                              fontWeight: FontWeight.w700,
-                              decoration: TextDecoration.none,
-                            ),
-                          ),
-                          150.verticalSpaceFromWidth,
-                          UnauthorisedButton(
-                              onPressed: () {
-                                navigateToLogin();
-                              },
-                              backGroundColour: Color(0xff437257),
-                              text: "Login",
-                              textColour: Color(0xffFFFCF1)),
-                          UnauthorisedButton(
-                            onPressed: () {
-                              navigateToGetStarted();
-                            },
-                            backGroundColour: Color(0xffFFFCF1),
-                            text: "Get Started",
-                            textColour: Color(0xff437257),
-                            isBorder: true,
-                          )
-                        ],
-                      ),
-                    )))));
+              child: Column(
+                children: [
+                  150.verticalSpace,
+                  Image.asset('assets/images/GreenHatLogo.png',
+                      height: 100, width: 100),
+                  Text(
+                    'TutorMe',
+                    style: TextStyle(
+                      color: Color(0xff437257),
+                      fontFamily: 'Montserrat',
+                      fontSize: 40.sp,
+                      fontWeight: FontWeight.w700,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                  150.verticalSpace,
+                  UnauthorisedButton(
+                      onPressed: () {
+                        navigateToLogin();
+                      },
+                      backGroundColour: Color(0xff437257),
+                      text: "Login",
+                      textColour: Color(0xffFFFCF1)),
+                  UnauthorisedButton(
+                    onPressed: () {
+                      navigateToGetStarted();
+                    },
+                    backGroundColour: Color(0xffFFFCF1),
+                    text: "Get Started",
+                    textColour: Color(0xff437257),
+                    isBorder: true,
+                  )
+                ],
+              ),
+            )))));
   }
 
   void navigateToLogin() {
@@ -70,5 +71,6 @@ class _homePageState extends State<homePage> {
 
   void navigateToGetStarted() {
     print('Navigate to get started page');
+    Get.toNamed('/SignUpDetails');
   }
 }
