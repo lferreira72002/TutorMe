@@ -91,16 +91,16 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
                             Form(
                                 child: Column(children: [
                               unauthorisedInput(
-                                hint_text: "Full name as per Bluecard",
+                                hintText: "Full name as per Bluecard",
                                 controller: nameController,
                               ),
                               unauthorisedInput(
-                                  hint_text: "Bluecard Number",
+                                  hintText: "Bluecard Number",
                                   controller: emailController,
                                   formatters: [BluecardNumberFormatter()],
                                   keyboard: TextInputType.number),
                               unauthorisedInput(
-                                hint_text: "Bluecard Expiry Date",
+                                hintText: "Bluecard Expiry Date",
                                 controller: passwordController,
                                 textInputAction: TextInputAction.done,
                                 keyboard: TextInputType.numberWithOptions(

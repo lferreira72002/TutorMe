@@ -83,6 +83,9 @@ class _singupConfirmationPageState extends State<singupConfirmationPage> {
                                       ),
                                     ],
                                   ),
+                                  Column(
+                                    children: [],
+                                  )
                                 ],
                               ),
                             ),

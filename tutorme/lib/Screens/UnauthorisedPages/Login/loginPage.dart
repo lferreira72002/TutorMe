@@ -1,9 +1,13 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
 import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
+import 'package:tutorme/main.dart';
 
 class loginPage extends StatefulWidget {
   const loginPage({super.key});
@@ -15,6 +19,10 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool signInError = false;
+
+  //form key
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -68,40 +76,48 @@ class _loginPageState extends State<loginPage> {
                             ),
                             100.verticalSpaceFromWidth,
                             Form(
+                                key: _formkey,
                                 child: Column(children: [
-                              unauthorisedInput(
-                                hint_text: "Email",
-                                controller: emailController,
-                                isAutoFocus: true,
-                              ),
-                              unauthorisedInput(
-                                hint_text: "Password",
-                                controller: passwordController,
-                                textInputAction: TextInputAction.done,
-                                isObsecure: true,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                        child: Text("Forgot Password?",
-                                            style: TextStyle(
-                                              color: Color(0xffC1C1C1),
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w600,
-                                              decoration: TextDecoration.none,
-                                            )),
-                                      )
-                                    ]),
-                              ),
-                            ])),
+                                  unauthorisedInput(
+                                    hintText: "Email",
+                                    controller: emailController,
+                                    isAutoFocus: true,
+                                    validator: emailVal,
+                                    errorText: signInError
+                                        ? 'Invalid email or password'
+                                        : null,
+                                  ),
+                                  unauthorisedInput(
+                                    hintText: "Password",
+                                    controller: passwordController,
+                                    textInputAction: TextInputAction.done,
+                                    isObscure: true,
+                                    validator: passwordVal,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10.0),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            child: Text("Forgot Password?",
+                                                style: TextStyle(
+                                                  color: Color(0xffC1C1C1),
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                )),
+                                          )
+                                        ]),
+                                  ),
+                                ])),
                             100.verticalSpaceFromWidth,
                             UnauthorisedButton(
                                 onPressed: () {
-                                  navigateToLogin();
+                                  ValidateAndLogIn();
                                 },
                                 backGroundColour: Color(0xff437257),
                                 text: "Login",
@@ -110,11 +126,49 @@ class _loginPageState extends State<loginPage> {
                         ))))));
   }
 
-  void navigateToLogin() {
-    print('Navigate to login page');
+  void ValidateAndLogIn() async {
+    setState(() {
+      signInError = false;
+    });
+
+    if (_formkey.currentState!.validate()) {
+      print('Validation passed...logging in! Please wait...');
+
+      try {
+        final AuthResponse res = await supabase.auth.signInWithPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } catch (e) {
+        print('Error: $e');
+        setState(() {
+          signInError = true;
+        });
+      }
+
+      final authSubscription = supabase.auth.onAuthStateChange.listen((data) {
+        final AuthChangeEvent event = data.event;
+        if (event == AuthChangeEvent.signedIn) {
+          print('User is signed in');
+        }
+      });
+    }
+    //validate input field
   }
 
-  void navigateToGetStarted() {
-    print('Navigate to get started page');
+  String? emailVal(String? toVal) {
+    RegExp regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (toVal == null || toVal.isEmpty) {
+      return '';
+    } else if (!regex.hasMatch(toVal)) {
+      return '';
+    } else if (signInError) return '';
+  }
+
+  String? passwordVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty) {
+      return '';
+    } else if (signInError) return '';
+    return null;
   }
 }

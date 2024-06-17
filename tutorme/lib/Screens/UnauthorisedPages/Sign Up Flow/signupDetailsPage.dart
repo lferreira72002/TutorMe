@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
 import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
+import 'package:tutorme/main.dart';
 
 class signupDetailsPage extends StatefulWidget {
   const signupDetailsPage({super.key});
@@ -17,7 +19,9 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool createUserError = false;
   int? isTutor = 0;
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -96,22 +100,26 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
                             ),
                             20.verticalSpaceFromWidth,
                             Form(
+                                key: _formkey,
                                 child: Column(children: [
-                              unauthorisedInput(
-                                hint_text: "Name",
-                                controller: nameController,
-                              ),
-                              unauthorisedInput(
-                                hint_text: "Email",
-                                controller: emailController,
-                              ),
-                              unauthorisedInput(
-                                hint_text: "Password",
-                                controller: passwordController,
-                                textInputAction: TextInputAction.done,
-                                isObsecure: true,
-                              ),
-                            ])),
+                                  unauthorisedInput(
+                                    hintText: "Name",
+                                    controller: nameController,
+                                    validator: nameVal,
+                                  ),
+                                  unauthorisedInput(
+                                    hintText: "Email",
+                                    controller: emailController,
+                                    validator: emailVal,
+                                  ),
+                                  unauthorisedInput(
+                                    hintText: "Password",
+                                    controller: passwordController,
+                                    textInputAction: TextInputAction.done,
+                                    isObscure: true,
+                                    validator: passwordVal,
+                                  ),
+                                ])),
                             10.verticalSpace,
                             CupertinoSlidingSegmentedControl(
                                 padding: EdgeInsets.all(10),
@@ -157,7 +165,7 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
                             70.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
-                                  navigateToNextScreen();
+                                  validateAndContinue();
                                 },
                                 backGroundColour: Color(0xff437257),
                                 text: "Continue",
@@ -166,12 +174,63 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
                         ))))));
   }
 
-  void navigateToNextScreen() {
-    print('Navigate to next screen');
-    if (isTutor == 1) {
-      Get.offAllNamed('/SignUpBluecard');
-    } else {
-      Get.toNamed('/Login');
+  String? emailVal(String? toVal) {
+    RegExp regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (toVal == null || toVal.isEmpty) {
+      return '';
+    } else if (!regex.hasMatch(toVal)) {
+      return '';
+    } else if (createUserError) return '';
+  }
+
+  String? passwordVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty || toVal.length < 6) {
+      return '';
+    } else if (createUserError) return '';
+    return null;
+  }
+
+  String? nameVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty) {
+      return '';
+    } else if (createUserError) return '';
+    return null;
+  }
+
+  void validateAndContinue() async {
+    final bool tutor = (isTutor == 1);
+
+    if (_formkey.currentState!.validate()) {
+      try {
+        final AuthResponse res = await supabase.auth.signUp(
+            email: emailController.text,
+            password: passwordController.text,
+            data: {
+              "is_tutor": tutor,
+              'email': emailController.text,
+              'first_name': nameController.text,
+            });
+      } catch (e) {
+        print('Error: $e');
+        setState(() {
+          createUserError = true;
+        });
+      }
+
+      final authSubscription = supabase.auth.onAuthStateChange.listen((data) {
+        final AuthChangeEvent event = data.event;
+        if (event == AuthChangeEvent.signedIn) {
+          print('User is signed in');
+        }
+      });
+
+      if (isTutor == 1) {
+        Get.offAllNamed('/SignUpBluecard');
+      } else {
+        // SEND TO HOME
+        print("Send to Home");
+      }
+      ;
     }
   }
 }
