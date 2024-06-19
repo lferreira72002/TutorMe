@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -103,6 +101,9 @@ class _loginPageState extends State<loginPage> {
                                             MainAxisAlignment.end,
                                         children: [
                                           GestureDetector(
+                                            onTap: () {
+                                              naviagteToResetPasswordRequest();
+                                            },
                                             child: Text("Forgot Password?",
                                                 style: TextStyle(
                                                   color: Color(0xffC1C1C1),
@@ -126,6 +127,10 @@ class _loginPageState extends State<loginPage> {
                                 textColour: Color(0xffFFFCF1)),
                           ],
                         ))))));
+  }
+
+  void naviagteToResetPasswordRequest() {
+    Get.toNamed('/ResetPasswordRequest');
   }
 
   void ValidateAndLogIn() async {

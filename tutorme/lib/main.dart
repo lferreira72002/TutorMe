@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Home/homePage.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Login/loginPage.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/ResetPassword/resetPasswordActionPage.dart';
+import 'package:tutorme/Screens/UnauthorisedPages/ResetPassword/resetPasswordRequestPage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupBankPage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupConfirmationPage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Sign%20Up%20Flow/signupDetailsPage.dart';
@@ -45,7 +47,13 @@ class MainApp extends StatelessWidget {
             GetPage(name: '/SignUpBank', page: () => signupBankPage()),
             GetPage(
                 name: '/SignUpConfirmation',
-                page: () => singupConfirmationPage())
+                page: () => singupConfirmationPage()),
+            GetPage(
+                name: '/ResetPasswordRequest',
+                page: () => resetPasswordRequestPage()),
+            GetPage(
+                name: '/ResetPasswordRequest',
+                page: () => resetPasswordActionPage())
           ],
         );
       },

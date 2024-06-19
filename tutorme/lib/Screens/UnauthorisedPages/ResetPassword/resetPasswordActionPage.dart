@@ -8,15 +8,15 @@ import 'package:get/get.dart';
 import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
 import 'package:tutorme/main.dart';
 
-class resetPasswordRequestPage extends StatefulWidget {
-  const resetPasswordRequestPage({super.key});
+class resetPasswordActionPage extends StatefulWidget {
+  const resetPasswordActionPage({super.key});
 
   @override
-  State<resetPasswordRequestPage> createState() =>
-      _resetPasswordRequestPageState();
+  State<resetPasswordActionPage> createState() =>
+      _resetPasswordActionPageState();
 }
 
-class _resetPasswordRequestPageState extends State<resetPasswordRequestPage> {
+class _resetPasswordActionPageState extends State<resetPasswordActionPage> {
   final emailController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
@@ -100,10 +100,16 @@ class _resetPasswordRequestPageState extends State<resetPasswordRequestPage> {
                                 key: _formkey,
                                 child: Column(children: [
                                   unauthorisedInput(
-                                    label: "Email",
+                                    label: "Password",
                                     hintText: "",
                                     controller: emailController,
-                                    validator: emailVal,
+                                    validator: passwordVal,
+                                  ),
+                                  unauthorisedInput(
+                                    label: "Confirm Password",
+                                    hintText: "",
+                                    controller: emailController,
+                                    validator: passwordVal,
                                   ),
                                 ])),
                             250.verticalSpace,
@@ -118,25 +124,12 @@ class _resetPasswordRequestPageState extends State<resetPasswordRequestPage> {
                         ))))));
   }
 
-  String? emailVal(String? toVal) {
-    RegExp regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    if (toVal == null || toVal.isEmpty) {
-      return '';
-    } else if (!regex.hasMatch(toVal)) {
+  String? passwordVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty || toVal.length < 6) {
       return '';
     }
+    return null;
   }
 
-  void changePassword() async {
-    await supabase.auth.resetPasswordForEmail(emailController.text,
-        redirectTo: "io.supabase.tutorme://resetPasswordRequestPage");
-    print("email sent!");
-
-    final authSubscription = supabase.auth.onAuthStateChange.listen((data) {
-      final AuthChangeEvent event = data.event;
-      if (event == AuthChangeEvent.passwordRecovery) {
-        Get.offAllNamed('/ResetPasswordActionPage');
-      }
-    });
-  }
+  void changePassword() async {}
 }
