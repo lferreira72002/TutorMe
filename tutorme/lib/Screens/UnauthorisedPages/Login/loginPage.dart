@@ -35,7 +35,7 @@ class _loginPageState extends State<loginPage> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios, color: Color(0xff437257)),
             onPressed: () {
-              Get.toNamed('/');
+              Get.back();
             },
           ),
         ),
