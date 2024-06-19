@@ -103,17 +103,20 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
                                 key: _formkey,
                                 child: Column(children: [
                                   unauthorisedInput(
-                                    hintText: "Name",
+                                    label: "Name",
+                                    hintText: "",
                                     controller: nameController,
                                     validator: nameVal,
                                   ),
                                   unauthorisedInput(
-                                    hintText: "Email",
+                                    label: "Email",
+                                    hintText: "",
                                     controller: emailController,
                                     validator: emailVal,
                                   ),
                                   unauthorisedInput(
-                                    hintText: "Password",
+                                    label: "Password",
+                                    hintText: "",
                                     controller: passwordController,
                                     textInputAction: TextInputAction.done,
                                     isObscure: true,

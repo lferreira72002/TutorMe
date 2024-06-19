@@ -12,6 +12,7 @@ class unauthorisedInput extends StatelessWidget {
   final bool isAutoFocus;
   final TextInputAction textInputAction;
   final bool isObscure;
+  final String label;
 
   const unauthorisedInput({
     super.key,
@@ -25,6 +26,7 @@ class unauthorisedInput extends StatelessWidget {
     this.isAutoFocus = false,
     this.textInputAction = TextInputAction.next,
     this.isObscure = false,
+    this.label = '',
   });
 
   @override
@@ -42,6 +44,7 @@ class unauthorisedInput extends StatelessWidget {
         keyboardType: keyboard,
         obscureText: isObscure,
         decoration: InputDecoration(
+          label: Text(label, style: TextStyle(color: Color(0xffC1C1C1))),
           filled: true,
           fillColor: const Color(0xffF6F5EE),
           errorStyle: const TextStyle(height: 0),
@@ -49,7 +52,7 @@ class unauthorisedInput extends StatelessWidget {
           hintStyle: const TextStyle(
             color: Color(0xffC1C1C1),
             fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w400,
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Color(0xffE1E1E1)),

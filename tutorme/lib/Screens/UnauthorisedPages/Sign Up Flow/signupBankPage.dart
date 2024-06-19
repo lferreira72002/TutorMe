@@ -91,17 +91,20 @@ class _signupBankPageState extends State<signupBankPage> {
                             Form(
                                 child: Column(children: [
                               unauthorisedInput(
-                                hintText: "Account Name",
+                                hintText: "Everyday basics",
+                                label: "Account name",
                                 controller: nameController,
                               ),
                               unauthorisedInput(
-                                  hintText: "BSB Number",
+                                  label: "BSB Number",
+                                  hintText: "123-456",
                                   controller: emailController,
                                   formatters: [HyphenInputFormatter()],
                                   keyboard: TextInputType.numberWithOptions(
                                       signed: true)),
                               unauthorisedInput(
-                                hintText: "Account Number",
+                                label: "Account Number",
+                                hintText: "123456789",
                                 controller: passwordController,
                                 textInputAction: TextInputAction.done,
                                 keyboard: TextInputType.numberWithOptions(

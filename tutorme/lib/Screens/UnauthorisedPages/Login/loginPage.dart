@@ -79,7 +79,8 @@ class _loginPageState extends State<loginPage> {
                                 key: _formkey,
                                 child: Column(children: [
                                   unauthorisedInput(
-                                    hintText: "Email",
+                                    label: "Email",
+                                    hintText: "",
                                     controller: emailController,
                                     isAutoFocus: true,
                                     validator: emailVal,
@@ -88,7 +89,8 @@ class _loginPageState extends State<loginPage> {
                                         : null,
                                   ),
                                   unauthorisedInput(
-                                    hintText: "Password",
+                                    label: "Password",
+                                    hintText: "",
                                     controller: passwordController,
                                     textInputAction: TextInputAction.done,
                                     isObscure: true,

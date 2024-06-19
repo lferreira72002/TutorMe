@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
 import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
+import 'package:tutorme/main.dart';
 
 class signupBluecardPage extends StatefulWidget {
   const signupBluecardPage({super.key});
@@ -15,8 +16,9 @@ class signupBluecardPage extends StatefulWidget {
 
 class _signupBluecardPageState extends State<signupBluecardPage> {
   final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final cardNumberController = TextEditingController();
+  final expiryController = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -89,24 +91,33 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
                             ),
                             20.verticalSpaceFromWidth,
                             Form(
+                                key: _formkey,
                                 child: Column(children: [
-                              unauthorisedInput(
-                                hintText: "Full name as per Bluecard",
-                                controller: nameController,
-                              ),
-                              unauthorisedInput(
-                                  hintText: "Bluecard Number",
-                                  controller: emailController,
-                                  formatters: [BluecardNumberFormatter()],
-                                  keyboard: TextInputType.number),
-                              unauthorisedInput(
-                                hintText: "Bluecard Expiry Date",
-                                controller: passwordController,
-                                textInputAction: TextInputAction.done,
-                                keyboard: TextInputType.numberWithOptions(
-                                    signed: true),
-                              ),
-                            ])),
+                                  unauthorisedInput(
+                                    hintText: "Jane Doe",
+                                    label: "Full Name",
+                                    controller: nameController,
+                                    validator: nameVal,
+                                  ),
+                                  unauthorisedInput(
+                                    hintText: "77777777/7",
+                                    label: "Bluecard Number",
+                                    controller: cardNumberController,
+                                    formatters: [BluecardNumberFormatter()],
+                                    keyboard: TextInputType.number,
+                                    validator: cardNumberVal,
+                                  ),
+                                  unauthorisedInput(
+                                    hintText: "YYYY/MM/DD",
+                                    label: 'Expiry Date',
+                                    controller: expiryController,
+                                    formatters: [ExpiryDateFormatter()],
+                                    textInputAction: TextInputAction.done,
+                                    keyboard: TextInputType.numberWithOptions(
+                                        signed: true),
+                                    validator: expiryDateVal,
+                                  ),
+                                ])),
                             100.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
@@ -119,9 +130,48 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
                         ))))));
   }
 
-  void navigateToBank() {
+  void navigateToBank() async {
+    //validate
+    if (_formkey.currentState!.validate()) {
+      print('Valid!');
+
+      //Send data to database
+      try {
+        await supabase.from("bluecards").insert({
+          'full_name': nameController.text,
+          'bluecard_number': cardNumberController.text,
+          'expiry_date': expiryController.text,
+        });
+      } catch (e) {
+        print('Error $e');
+      }
+      //Go to next page
+      Get.offAllNamed("/SignUpBank");
+    }
     print('Navigate to Bank ');
-    Get.offAllNamed('/SignUpBank');
+  }
+
+  String? nameVal(String? toVal) {
+    RegExp regex = RegExp(r"^[A-Z][a-z]+ [A-Z][a-z]+");
+    if (toVal == null || toVal.isEmpty) {
+      return '';
+    } else if (!regex.hasMatch(toVal)) {
+      return '';
+    }
+  }
+
+  String? cardNumberVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty || toVal.length < 8) {
+      return '';
+    }
+    return null;
+  }
+
+  String? expiryDateVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty || toVal.length < 10) {
+      return '';
+    }
+    return null;
   }
 }
 
@@ -145,6 +195,34 @@ class BluecardNumberFormatter extends TextInputFormatter {
         newText += '/';
       }
     }
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
+  }
+}
+
+class ExpiryDateFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String newText = newValue.text;
+
+    // If the new text is longer than the old text, we need to format it
+    if (newText.length > oldValue.text.length) {
+      // If the text exceeds the format length, revert to old value
+      if (newText.length > 10) {
+        return oldValue;
+      }
+      // Automatically add a slash after the 4th and 7th characters if not already there
+      if (newText.length == 5 && newText[4] != '/') {
+        newText = newText.substring(0, 4) + '/' + newText.substring(4);
+      }
+      if (newText.length == 8 && newText[7] != '/') {
+        newText = newText.substring(0, 7) + '/' + newText.substring(7);
+      }
+    }
+
     return TextEditingValue(
       text: newText,
       selection: TextSelection.collapsed(offset: newText.length),
