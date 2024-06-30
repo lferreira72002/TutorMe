@@ -28,8 +28,9 @@ class Profileheader extends StatelessWidget {
                       GestureDetector(
                         child: Obx(
                           () => CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                'https://qsltbdfjfxhjburxnnqd.supabase.co/storage/v1/object/public/profileImages/${supabase.auth.currentUser!.id}_profilepicture.jpg'), // Replace with your avatar image URL
+                            backgroundImage: NetworkImage(userController
+                                .profileURL
+                                .value), // Replace with your avatar image URL
                             radius: 24.0,
                           ),
                         ),
@@ -97,6 +98,13 @@ class Profileheader extends StatelessWidget {
       final fileName =
           '${supabase.auth.currentUser!.id}_profilepicture.$fileExt';
       final filePath = fileName;
+
+      //check to see if file exits already
+      final doesExist = await doesFileExist(filePath);
+      if (doesExist) {
+        await supabase.storage.from('profileImages').remove([fileName]);
+      }
+
       await supabase.storage.from('profileImages').uploadBinary(
             filePath,
             bytes,
@@ -110,6 +118,16 @@ class Profileheader extends StatelessWidget {
     } catch (e) {
       print('Error $e');
       return null;
+    }
+  }
+
+  Future<bool> doesFileExist(fileName) async {
+    final List<FileObject> objects =
+        await supabase.storage.from('profileImages').list();
+    if (objects.contains(fileName)) {
+      return true;
+    } else {
+      return false;
     }
   }
 }
