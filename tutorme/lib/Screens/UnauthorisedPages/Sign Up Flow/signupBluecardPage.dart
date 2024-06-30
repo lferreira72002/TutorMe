@@ -118,7 +118,7 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
                                     validator: expiryDateVal,
                                   ),
                                 ])),
-                            100.verticalSpace,
+                            150.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
                                   navigateToBank();
@@ -131,6 +131,17 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
   }
 
   void navigateToBank() async {
+    //loading dialog
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Color(0xffFFFCF1),
+            ),
+          );
+        });
+
     //validate
     if (_formkey.currentState!.validate()) {
       print('Valid!');
@@ -147,8 +158,9 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
       }
       //Go to next page
       Get.offAllNamed("/SignUpBank");
+    } else {
+      Navigator.of(context).pop();
     }
-    print('Navigate to Bank ');
   }
 
   String? nameVal(String? toVal) {

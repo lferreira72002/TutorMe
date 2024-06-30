@@ -125,11 +125,11 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
                                 ])),
                             10.verticalSpace,
                             CupertinoSlidingSegmentedControl(
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(5),
                                 children: {
                                   0: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 35, vertical: 10),
+                                        horizontal: 45, vertical: 10),
                                     child: Text(
                                       'Student',
                                       style: TextStyle(
@@ -201,6 +201,16 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
   }
 
   void validateAndContinue() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Color(0xffFFFCF1),
+            ),
+          );
+        });
+
     final bool tutor = (isTutor == 1);
 
     if (_formkey.currentState!.validate()) {
@@ -234,6 +244,8 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
         print("Send to Home");
       }
       ;
+    } else {
+      Navigator.of(context).pop();
     }
   }
 }

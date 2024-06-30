@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
 import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
+import 'package:tutorme/Controllers/userController.dart';
 import 'package:tutorme/main.dart';
 
 class loginPage extends StatefulWidget {
@@ -21,6 +22,9 @@ class _loginPageState extends State<loginPage> {
 
   //form key
   final _formkey = GlobalKey<FormState>();
+
+  //User controller
+  final UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +150,8 @@ class _loginPageState extends State<loginPage> {
           email: emailController.text,
           password: passwordController.text,
         );
+        print(res.user?.userMetadata);
+        userController.setUserName(res.user?.userMetadata?['first_name'] ?? '');
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -157,6 +163,7 @@ class _loginPageState extends State<loginPage> {
         final AuthChangeEvent event = data.event;
         if (event == AuthChangeEvent.signedIn) {
           print('User is signed in');
+          Get.offAllNamed('/OwnProfile');
         }
       });
     }

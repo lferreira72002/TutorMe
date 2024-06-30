@@ -13,6 +13,7 @@ dependencies:
   flutter_screenutil: ^5.9.0
   get: ^4.6.6
   keyboard_actions: "^4.1.0"
+  image_picker: ^1.1.2
 
 
 dev_dependencies:

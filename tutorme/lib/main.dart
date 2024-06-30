@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tutorme/Controllers/userController.dart';
+import 'package:tutorme/Screens/AuthorisedPages/profilePage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Home/homePage.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Login/loginPage.dart';
@@ -17,6 +20,7 @@ void main() async {
       url: "https://qsltbdfjfxhjburxnnqd.supabase.co",
       anonKey:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzbHRiZGZqZnhoamJ1cnhubnFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI5MzAzOTYsImV4cCI6MjAyODUwNjM5Nn0.4NpTtopdBEOGjjJyzcZENXUZ3GHOLEYCt_noCle0b2o");
+  Get.put(UserController());
   runApp(const MainApp());
 }
 
@@ -53,7 +57,8 @@ class MainApp extends StatelessWidget {
                 page: () => resetPasswordRequestPage()),
             GetPage(
                 name: '/ResetPasswordRequest',
-                page: () => resetPasswordActionPage())
+                page: () => resetPasswordActionPage()),
+            GetPage(name: '/OwnProfile', page: () => profilePage())
           ],
         );
       },

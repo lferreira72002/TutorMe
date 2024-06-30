@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
-import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
+import 'package:tutorme/Components/Misc/bulletPoint.dart';
 
 class singupConfirmationPage extends StatefulWidget {
   const singupConfirmationPage({super.key});
@@ -72,27 +72,38 @@ class _singupConfirmationPageState extends State<singupConfirmationPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        'We need a little time to run some\nchecks. You’ll hear from us within\n48 hours. In the mean time, why not\nexplore your profile. There is lots to\ndo:',
+                                        'We need a little time to run some checks.\nYou’ll hear from us within 48 hours. Why\nnot explore your profile, there is lots to\ndo:',
                                         style: TextStyle(
                                           color: Color(0xff437257),
                                           fontFamily: 'Montserrat',
                                           fontSize: 16.sp,
-                                          fontWeight: FontWeight.w700,
+                                          fontWeight: FontWeight.w600,
                                           decoration: TextDecoration.none,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  Column(
-                                    children: [],
+                                  10.verticalSpace,
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20.0),
+                                    child: Column(
+                                      children: [
+                                        BulletList([
+                                          "Schedule your availability",
+                                          "Set an hourly rate",
+                                          "Upload a profile picture",
+                                          "Write a bio"
+                                        ])
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
                             ),
-                            250.verticalSpace,
+                            150.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
-                                  navigateToBluecard();
+                                  navigateToProfile();
                                 },
                                 backGroundColour: Color(0xff437257),
                                 text: "To profile",
@@ -101,12 +112,8 @@ class _singupConfirmationPageState extends State<singupConfirmationPage> {
                         ))))));
   }
 
-  void navigateToHome() {
-    print('Navigate to Home');
-  }
-
-  void navigateToBluecard() {
-    print('Navigate to Bluecard');
-    Get.offAllNamed('/SignUpBluecard');
+  void navigateToProfile() {
+    print('Navigate to Profile');
+    Get.offAllNamed('/OwnProfile');
   }
 }

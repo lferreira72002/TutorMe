@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Components/Buttons/unauthorisedButton.dart';
 import 'package:get/get.dart';
 import 'package:tutorme/Components/Inputs/unauthorisedInput.dart';
+import 'package:tutorme/main.dart';
 
 class signupBankPage extends StatefulWidget {
   const signupBankPage({super.key});
@@ -14,9 +15,10 @@ class signupBankPage extends StatefulWidget {
 }
 
 class _signupBankPageState extends State<signupBankPage> {
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final accountNameController = TextEditingController();
+  final accountNumberController = TextEditingController();
+  final accountBsbController = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -89,32 +91,36 @@ class _signupBankPageState extends State<signupBankPage> {
                             ),
                             20.verticalSpaceFromWidth,
                             Form(
+                                key: _formkey,
                                 child: Column(children: [
-                              unauthorisedInput(
-                                hintText: "Everyday basics",
-                                label: "Account name",
-                                controller: nameController,
-                              ),
-                              unauthorisedInput(
-                                  label: "BSB Number",
-                                  hintText: "123-456",
-                                  controller: emailController,
-                                  formatters: [HyphenInputFormatter()],
-                                  keyboard: TextInputType.numberWithOptions(
-                                      signed: true)),
-                              unauthorisedInput(
-                                label: "Account Number",
-                                hintText: "123456789",
-                                controller: passwordController,
-                                textInputAction: TextInputAction.done,
-                                keyboard: TextInputType.numberWithOptions(
-                                    signed: true),
-                                formatters: [
-                                  LengthLimitingTextInputFormatter(10)
-                                ],
-                              ),
-                            ])),
-                            100.verticalSpace,
+                                  unauthorisedInput(
+                                    hintText: "Everyday basics",
+                                    label: "Account name",
+                                    controller: accountNameController,
+                                    validator: accountNameVal,
+                                  ),
+                                  unauthorisedInput(
+                                      label: "BSB Number",
+                                      hintText: "123-456",
+                                      controller: accountBsbController,
+                                      validator: bsbVal,
+                                      formatters: [HyphenInputFormatter()],
+                                      keyboard: TextInputType.numberWithOptions(
+                                          signed: true)),
+                                  unauthorisedInput(
+                                    label: "Account Number",
+                                    hintText: "123456789",
+                                    controller: accountNumberController,
+                                    validator: accountNumberVal,
+                                    textInputAction: TextInputAction.done,
+                                    keyboard: TextInputType.numberWithOptions(
+                                        signed: true),
+                                    formatters: [
+                                      LengthLimitingTextInputFormatter(10)
+                                    ],
+                                  ),
+                                ])),
+                            150.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
                                   navigateToConfirmation();
@@ -126,9 +132,58 @@ class _signupBankPageState extends State<signupBankPage> {
                         ))))));
   }
 
-  void navigateToConfirmation() {
+  void navigateToConfirmation() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Color(0xffFFFCF1),
+            ),
+          );
+        });
+
+    if (_formkey.currentState!.validate()) {
+      print('Valid!');
+      try {
+        await supabase.from("tutorBankDetails").insert({
+          "account_name": accountNameController.text,
+          "account_number": accountNumberController.text,
+          "bsb": accountBsbController.text,
+        });
+      } catch (e) {
+        print("Error $e");
+      }
+
+      Get.offAllNamed("/SignUpConfirmation");
+    } else {
+      Navigator.of(context).pop();
+      return;
+    }
+
     print('Navigate to Account Update');
     Get.offAllNamed('/SignUpConfirmation');
+  }
+
+  String? accountNameVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty || toVal.length < 3) {
+      return '';
+    }
+    return null;
+  }
+
+  String? bsbVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty || toVal.length < 7) {
+      return '';
+    }
+    return null;
+  }
+
+  String? accountNumberVal(String? toVal) {
+    if (toVal == null || toVal.isEmpty || toVal.length < 10) {
+      return '';
+    }
+    return null;
   }
 }
 

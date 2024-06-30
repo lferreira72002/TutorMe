@@ -14,18 +14,19 @@ class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Color(0xffFFFCF1),
         ),
         body: Container(
-            height: MediaQuery.of(context).size.height,
+            height: screenHeight,
             decoration: BoxDecoration(
               color: Color(0xffFFFCF1),
             ),
             child: SafeArea(
-                child: Container(
+                child: SingleChildScrollView(
                     child: Container(
               child: Column(
                 children: [
