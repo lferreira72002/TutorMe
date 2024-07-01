@@ -28,9 +28,14 @@ class Profileheader extends StatelessWidget {
                       GestureDetector(
                         child: Obx(
                           () => CircleAvatar(
-                            backgroundImage: NetworkImage(userController
-                                .profileURL
-                                .value), // Replace with your avatar image URL
+                            backgroundColor: Color(0xffFFFCF1),
+                            backgroundImage: userController
+                                    .profileURL.isNotEmpty
+                                ? NetworkImage(userController.profileURL.value)
+                                : null,
+                            child: userController.profileURL.isEmpty
+                                ? Icon(Icons.cloud_upload_outlined)
+                                : null, // Replace with your avatar image URL
                             radius: 24.0,
                           ),
                         ),
@@ -95,9 +100,11 @@ class Profileheader extends StatelessWidget {
     try {
       final bytes = await imageFile.readAsBytes();
       final fileExt = imageFile.path.split('.').last;
+      print(fileExt);
       final fileName =
-          '${supabase.auth.currentUser!.id}_profilepicture.$fileExt';
+          '${supabase.auth.currentUser!.id}_profilepicture.${fileExt}';
       final filePath = fileName;
+      print(filePath);
 
       //check to see if file exits already
       final doesExist = await doesFileExist(filePath);
@@ -105,16 +112,20 @@ class Profileheader extends StatelessWidget {
         await supabase.storage.from('profileImages').remove([fileName]);
       }
 
+      //upload the file
       await supabase.storage.from('profileImages').uploadBinary(
             filePath,
             bytes,
             fileOptions: FileOptions(contentType: imageFile.mimeType),
           );
 
+      //create a url for the image
       final imageUrlResponse = await supabase.storage
-          .from('avatars')
+          .from('profileImages')
           .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10);
-      userController.setProfileURL(imageUrlResponse);
+
+      //update the user metadata with the URL image & update our own controller
+      userController.updateProfileURL(imageUrlResponse);
     } catch (e) {
       print('Error $e');
       return null;
@@ -122,12 +133,14 @@ class Profileheader extends StatelessWidget {
   }
 
   Future<bool> doesFileExist(fileName) async {
+    print('checking if file exists...');
     final List<FileObject> objects =
         await supabase.storage.from('profileImages').list();
-    if (objects.contains(fileName)) {
-      return true;
-    } else {
-      return false;
+    for (var object in objects) {
+      if (object.name == fileName) {
+        return true;
+      }
     }
+    return false;
   }
 }

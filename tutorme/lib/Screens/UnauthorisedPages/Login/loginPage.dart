@@ -152,6 +152,7 @@ class _loginPageState extends State<loginPage> {
         );
         print(res.user?.userMetadata);
         userController.setUserName(res.user?.userMetadata?['first_name'] ?? '');
+        userController.setProfileURL(res.user?.userMetadata?['profile_url']);
       } catch (e) {
         print('Error: $e');
         setState(() {

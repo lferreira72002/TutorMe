@@ -222,6 +222,7 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
               "is_tutor": tutor,
               'email': emailController.text,
               'first_name': nameController.text,
+              'profile_url': null,
             });
       } catch (e) {
         print('Error: $e');
@@ -238,6 +239,7 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
       });
 
       if (isTutor == 1) {
+        //ADD GET AND ADD USER INFO TO USER CONTROLLER
         Get.offAllNamed('/SignUpBluecard');
       } else {
         // SEND TO HOME
