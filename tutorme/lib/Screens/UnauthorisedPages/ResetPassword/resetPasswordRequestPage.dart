@@ -106,7 +106,7 @@ class _resetPasswordRequestPageState extends State<resetPasswordRequestPage> {
                                     validator: emailVal,
                                   ),
                                 ])),
-                            250.verticalSpace,
+                            200.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
                                   changePassword();

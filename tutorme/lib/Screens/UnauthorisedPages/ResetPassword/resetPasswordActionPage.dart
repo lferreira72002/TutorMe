@@ -112,7 +112,7 @@ class _resetPasswordActionPageState extends State<resetPasswordActionPage> {
                                     validator: passwordVal,
                                   ),
                                 ])),
-                            250.verticalSpace,
+                            200.verticalSpace,
                             UnauthorisedButton(
                                 onPressed: () {
                                   changePassword();

@@ -148,7 +148,7 @@ class _signupBluecardPageState extends State<signupBluecardPage> {
 
       //Send data to database
       try {
-        await supabase.from("bluecards").insert({
+        await supabase.from("tutorBluecards").insert({
           'full_name': nameController.text,
           'bluecard_number': cardNumberController.text,
           'expiry_date': expiryController.text,

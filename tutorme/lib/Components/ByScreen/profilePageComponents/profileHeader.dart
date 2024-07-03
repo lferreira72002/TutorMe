@@ -7,14 +7,19 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tutorme/Controllers/userController.dart';
 import 'package:tutorme/main.dart';
 
-class Profileheader extends StatelessWidget {
+class Profileheader extends StatefulWidget {
+  @override
+  State<Profileheader> createState() => _ProfileheaderState();
+}
+
+class _ProfileheaderState extends State<Profileheader> {
   final UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xff31704A),
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: SafeArea(
         child: Column(
           children: [
@@ -25,23 +30,31 @@ class Profileheader extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      GestureDetector(
-                        child: Obx(
-                          () => CircleAvatar(
-                            backgroundColor: Color(0xffFFFCF1),
-                            backgroundImage: userController
-                                    .profileURL.isNotEmpty
-                                ? NetworkImage(userController.profileURL.value)
-                                : null,
-                            child: userController.profileURL.isEmpty
-                                ? Icon(Icons.cloud_upload_outlined)
-                                : null, // Replace with your avatar image URL
-                            radius: 24.0,
+                      Container(
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Color(0xffFFFCF1)),
+                        child: GestureDetector(
+                          child: Obx(
+                            () => Padding(
+                              padding: const EdgeInsets.all(1.5),
+                              child: CircleAvatar(
+                                backgroundColor: Color(0xffFFFCF1),
+                                backgroundImage:
+                                    userController.profileURL.isNotEmpty
+                                        ? NetworkImage(
+                                            userController.profileURL.value)
+                                        : null,
+                                child: userController.profileURL.isEmpty
+                                    ? Icon(Icons.cloud_upload_outlined)
+                                    : null, // Replace with your avatar image URL
+                                radius: 32.0,
+                              ),
+                            ),
                           ),
+                          onTap: () async {
+                            uploadProfilePicture();
+                          },
                         ),
-                        onTap: () async {
-                          uploadProfilePicture();
-                        },
                       ),
                       SizedBox(width: 10.0),
                       Column(
@@ -56,8 +69,8 @@ class Profileheader extends StatelessWidget {
                             userController.userName.value,
                             style: TextStyle(
                                 color: Color(0xffFFFCF1),
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold),
+                                fontSize: 26.0,
+                                fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
@@ -84,11 +97,6 @@ class Profileheader extends StatelessWidget {
     );
   }
 
-  void signOut() {
-    supabase.auth.signOut();
-    Get.offAllNamed('/login');
-  }
-
   Future<String?> uploadProfilePicture() async {
     final imageFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -112,6 +120,16 @@ class Profileheader extends StatelessWidget {
         await supabase.storage.from('profileImages').remove([fileName]);
       }
 
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Color(0xffFFFCF1),
+              ),
+            );
+          });
+
       //upload the file
       await supabase.storage.from('profileImages').uploadBinary(
             filePath,
@@ -125,11 +143,17 @@ class Profileheader extends StatelessWidget {
           .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10);
 
       //update the user metadata with the URL image & update our own controller
-      userController.updateProfileURL(imageUrlResponse);
+      await userController.updateProfileURL(imageUrlResponse);
+      Navigator.of(context).pop();
     } catch (e) {
       print('Error $e');
       return null;
     }
+  }
+
+  void signOut() {
+    supabase.auth.signOut();
+    Get.offAllNamed('/login');
   }
 
   Future<bool> doesFileExist(fileName) async {
