@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:tutorme/Components/Inputs/searchInput.dart';
 
-class searchBar extends StatefulWidget {
-  const searchBar({super.key});
+class Searchbar extends StatefulWidget {
+  const Searchbar({super.key});
 
   @override
-  State<searchBar> createState() => _searchBarState();
+  State<Searchbar> createState() => _SearchbarState();
 }
 
-class _searchBarState extends State<searchBar> {
+class _SearchbarState extends State<Searchbar> {
   final searchBarController = TextEditingController();
 
   @override

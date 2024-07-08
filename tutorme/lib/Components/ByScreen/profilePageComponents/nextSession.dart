@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Nextsession extends StatefulWidget {
-  const Nextsession({super.key});
+  final String time;
+  final String location;
+
+  const Nextsession({super.key, required this.time, required this.location});
 
   @override
   State<Nextsession> createState() => _NextsessionState();
@@ -84,7 +87,7 @@ class _NextsessionState extends State<Nextsession> {
                                 ),
                                 SizedBox(width: 5.0),
                                 Text(
-                                  "Time",
+                                  widget.time.substring(0, 5),
                                   style: TextStyle(
                                     color: Color(0xff000000),
                                     fontFamily: 'Montserrat',
@@ -92,14 +95,14 @@ class _NextsessionState extends State<Nextsession> {
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                SizedBox(width: 50.0),
+                                SizedBox(width: 15.0),
                                 Icon(
                                   Icons.location_on_outlined,
                                   color: Color(0xff000000),
                                 ),
                                 SizedBox(width: 5.0),
                                 Text(
-                                  "Location",
+                                  widget.location.substring(0, 22) + '...',
                                   style: TextStyle(
                                     color: Color(0xff000000),
                                     fontFamily: 'Montserrat',

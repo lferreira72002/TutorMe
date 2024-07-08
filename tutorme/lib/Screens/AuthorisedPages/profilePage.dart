@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tutorme/Components/ByScreen/profilePageComponents/bio.dart';
 import 'package:tutorme/Components/ByScreen/profilePageComponents/nextSession.dart';
 import 'package:tutorme/Components/ByScreen/profilePageComponents/noNextSession.dart';
 import 'package:tutorme/Components/ByScreen/profilePageComponents/profileHeader.dart';
@@ -25,7 +26,7 @@ class _profilePageState extends State<profilePage> {
             children: [
               Profileheader(),
               0.verticalSpace,
-              FutureBuilder<bool>(
+              FutureBuilder<Map<String, dynamic>>(
                   future: checkAvailableSession(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -36,11 +37,19 @@ class _profilePageState extends State<profilePage> {
                       return Center(
                         child: Text('${snapshot.error}'),
                       );
+                    } else if (!snapshot.hasData ||
+                        !snapshot.data!['availableSession']) {
+                      return Nonextsession();
                     } else {
-                      final hasSessions = snapshot.data ?? false;
-                      return hasSessions ? Nextsession() : noNextsession();
+                      final result = snapshot.data!;
+                      print(result);
+                      return Nextsession(
+                          time: result['data']['Time'],
+                          location: result['data']['Location']);
                     }
-                  })
+                  }),
+              15.verticalSpace,
+              Bio(),
             ],
           ),
         ),
@@ -48,10 +57,29 @@ class _profilePageState extends State<profilePage> {
     );
   }
 
-  Future<bool> checkAvailableSession() async {
-
+  Future<Map<String, dynamic>> checkAvailableSession() async {
+    print('checking with database...');
     final currentUID = supabase.auth.currentUser?.id;
+    print(currentUID);
 
-    final data = await supabase.from('bookings').select().eq('UID', currentUID)
+    final response = await supabase
+        .from('bookings')
+        .select()
+        .eq('Tutor', '$currentUID')
+        .isFilter('Student', null);
+
+    final data = response as List;
+
+    return {
+      'availableSession': data.isNotEmpty,
+      'data': data.isNotEmpty ? data[0] : null
+    };
   }
+}
+
+class sessionCheckResult {
+  final bool availableSession;
+  final List<dynamic>? data;
+
+  sessionCheckResult({required this.availableSession, required this.data});
 }

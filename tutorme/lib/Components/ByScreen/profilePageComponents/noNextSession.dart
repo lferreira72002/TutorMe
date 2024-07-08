@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class noNextsession extends StatefulWidget {
-  const noNextsession({super.key});
+class Nonextsession extends StatefulWidget {
+  const Nonextsession({super.key});
 
   @override
-  State<noNextsession> createState() => _noNextsessionState();
+  State<Nonextsession> createState() => _NonextsessionState();
 }
 
-class _noNextsessionState extends State<noNextsession> {
+class _NonextsessionState extends State<Nonextsession> {
   @override
   Widget build(BuildContext context) {
     return Padding(
