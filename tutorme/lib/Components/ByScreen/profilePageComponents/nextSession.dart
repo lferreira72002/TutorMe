@@ -102,7 +102,7 @@ class _NextsessionState extends State<Nextsession> {
                                 ),
                                 SizedBox(width: 5.0),
                                 Text(
-                                  widget.location.substring(0, 22) + '...',
+                                  locationText(widget.location),
                                   style: TextStyle(
                                     color: Color(0xff000000),
                                     fontFamily: 'Montserrat',
@@ -133,5 +133,13 @@ class _NextsessionState extends State<Nextsession> {
         ],
       ),
     );
+  }
+
+  String locationText(location) {
+    if (location.length > 22) {
+      return location.substring(0, 22) + '...';
+    } else {
+      return location;
+    }
   }
 }

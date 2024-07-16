@@ -18,7 +18,7 @@ class _profilePageState extends State<profilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xff31704A),
@@ -31,7 +31,9 @@ class _profilePageState extends State<profilePage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: Color(0xffFFFCF1),
+                        ),
                       );
                     } else if (snapshot.hasError) {
                       return Center(
