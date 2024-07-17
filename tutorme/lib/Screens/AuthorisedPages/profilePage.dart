@@ -60,7 +60,6 @@ class _profilePageState extends State<profilePage> {
   }
 
   Future<Map<String, dynamic>> checkAvailableSession() async {
-    print('checking with database...');
     final currentUID = supabase.auth.currentUser?.id;
     print(currentUID);
 

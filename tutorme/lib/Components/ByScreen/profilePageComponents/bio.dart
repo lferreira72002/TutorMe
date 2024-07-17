@@ -74,6 +74,7 @@ class _BioState extends State<Bio> {
                       ),
                     ),
                     Container(
+                      height: 300,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Column(
