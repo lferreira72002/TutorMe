@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tutorme/Controllers/userController.dart';
 import 'package:tutorme/Screens/AuthorisedPages/profilePage.dart';
+import 'package:tutorme/Screens/AuthorisedPages/subjectSelectionPage.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Home/homePage.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorme/Screens/UnauthorisedPages/Login/loginPage.dart';
@@ -58,7 +59,9 @@ class MainApp extends StatelessWidget {
             GetPage(
                 name: '/ResetPasswordRequest',
                 page: () => resetPasswordActionPage()),
-            GetPage(name: '/OwnProfile', page: () => profilePage())
+            GetPage(name: '/OwnProfile', page: () => profilePage()),
+            GetPage(
+                name: '/subjectSelection', page: () => SubjectselectionPage())
           ],
         );
       },

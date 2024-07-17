@@ -76,7 +76,7 @@ class _BioState extends State<Bio> {
                     Container(
                       height: 300,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -94,16 +94,44 @@ class _BioState extends State<Bio> {
                               label: "Tell your clients about yourself",
                             ),
                             10.verticalSpace,
-                            Text(
-                              "Subjects Offered",
-                              style: TextStyle(
-                                color: Color(0xff000000),
-                                fontFamily: 'Montserrat',
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
+                            GestureDetector(
+                              onTap: () => openSubjectNomination(),
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Subjects Offered",
+                                          style: TextStyle(
+                                            color: Color(0xff000000),
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Text('English, Math'),
+                                        5.verticalSpace
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.chevron_right,
+                                              color: Color(0xff000000)),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            Text('English, Math')
                           ],
                         ),
                       ),
@@ -116,5 +144,9 @@ class _BioState extends State<Bio> {
         ],
       ),
     );
+  }
+
+  openSubjectNomination() {
+    Get.toNamed("/subjectSelection");
   }
 }

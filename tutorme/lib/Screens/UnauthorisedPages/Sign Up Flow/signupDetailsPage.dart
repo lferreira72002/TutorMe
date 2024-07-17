@@ -57,7 +57,7 @@ class _signupDetailsPageState extends State<signupDetailsPage> {
                                     Text('TutorMe',
                                         textAlign: TextAlign.end,
                                         style: TextStyle(
-                                            color: Color(0xff437257),
+                                            color: Color(0xff31704A),
                                             fontSize: 20.sp,
                                             fontWeight: FontWeight.w700))
                                   ]),
