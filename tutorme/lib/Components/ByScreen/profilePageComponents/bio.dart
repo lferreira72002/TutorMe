@@ -93,7 +93,7 @@ class _BioState extends State<Bio> {
                             bioEditoer(
                               label: "Tell your clients about yourself",
                             ),
-                            10.verticalSpace,
+                            20.verticalSpace,
                             GestureDetector(
                               onTap: () => openSubjectNomination(),
                               child: Container(
